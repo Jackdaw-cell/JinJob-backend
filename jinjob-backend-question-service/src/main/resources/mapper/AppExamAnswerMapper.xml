@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jackdaw.jinjobbackendquestionservice.mapper.AppExamAnswerMapper">
+
+    <resultMap id="BaseResultMap" type="com.jackdaw.jinjobbackendmodel.entity.po.AppExamAnswer">
+            <result property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="userId" column="userId" jdbcType="VARCHAR"/>
+            <result property="score" column="score" jdbcType="FLOAT"/>
+            <result property="accuracy" column="accuracy" jdbcType="FLOAT"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="categoryId" column="categoryId" jdbcType="INTEGER"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,score,
+        accuracy,categoryId,create_time,update_time,status
+    </sql>
+</mapper>

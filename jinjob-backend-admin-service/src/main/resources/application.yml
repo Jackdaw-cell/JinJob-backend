@@ -1,0 +1,66 @@
+#log:
+#  root:
+#    level: info
+spring:
+  application:
+    name: jinjob-backend-admin-service
+  # 默认 dev 环境
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/jinoj
+    username: root
+    password: SBnightwatch777_
+  mvc:
+#    favicon:
+#      enable: false
+#    throw-exception-if-no-handler-found: true
+    #knife4J
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  redis:
+    database: 1
+    host: localhost
+    jedis:
+      pool:
+        max-active: 20
+        max-idle: 10
+        max-wait: -1
+        min-idle: 0
+    port: 6379
+    timeout: 5000
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  session:
+    store-type: redis
+    # 30 天过期
+    timeout: 2592000
+  web:
+    resources:
+      add-mappings: false
+server:
+  address: 0.0.0.0
+  port: 8106
+  servlet:
+    context-path: /api/admin
+    session:
+      cookie:
+        max-age: 2592000
+        path: /api
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+super:
+  admin:
+    phones: 18688886666
+project:
+    folder: F:\Jinoj\jinoj-backend-microservice-master\jinjob-backend\jinjob-file-folder\
+knife4j:
+  enable: true

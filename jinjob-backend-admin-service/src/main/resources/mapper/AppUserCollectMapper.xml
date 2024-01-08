@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jackdaw.jinjobbackendadminservice.mapper.AppUserCollectMapper">
+
+    <!--实体映射-->
+    <resultMap id="base_result_map" type="com.jackdaw.jinjobbackendmodel.entity.po.AppUserCollect">
+        <!--收藏ID-->
+        <id column="collect_id" property="collectId"/>
+        <!--用户ID-->
+        <result column="user_id" property="userId"/>
+        <!--主体ID 问题ID,考题ID,分享文章ID-->
+        <result column="object_id" property="objectId"/>
+        <!--0:分享收藏 1:问题收藏  2:考题收藏-->
+        <result column="collect_type" property="collectType"/>
+        <!--收藏时间-->
+        <result column="collect_time" property="collectTime"/>
+    </resultMap>
+
+
+    <!-- 通用查询结果列-->
+    <sql id="base_column_list">
+        collect_id
+        ,user_id,object_id,collect_type,collect_time
+
+    </sql>
+
+    <sql id="base_condition_filed">
+        <if test="query.collectId != null">
+            and collect_id = #{query.collectId}
+        </if>
+        <if test="query.userId != null and query.userId!=''">
+            and user_id = #{query.userId}
+        </if>
+        <if test="query.objectId != null and query.objectId!=''">
+            and object_id = #{query.objectId}
+        </if>
+        <if test="query.collectType != null">
+            and collect_type = #{query.collectType}
+        </if>
+        <if test="query.collectTime != null and query.collectTime!=''">
+            <![CDATA[ and  collect_time=str_to_date(#{query.collectTime}, '%Y-%m-%d') ]]>
+        </if>
+    </sql>
+
+    <!-- 通用查询条件列-->
+    <sql id="query_condition">
+        <where>
+            <include refid="base_condition_filed"/>
+            <if test="query.userIdFuzzy!= null  and query.userIdFuzzy!=''">
+                and user_id like concat('%', #{query.userIdFuzzy}, '%')
+            </if>
+            <if test="query.objectIdFuzzy!= null  and query.objectIdFuzzy!=''">
+                and object_id like concat('%', #{query.objectIdFuzzy}, '%')
+            </if>
+            <if test="query.collectTimeStart!= null and query.collectTimeStart!=''">
+                <![CDATA[ and  collect_time>=str_to_date(#{query.collectTimeStart}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="query.collectTimeEnd!= null and query.collectTimeEnd!=''">
+                <![CDATA[ and  collect_time< date_sub(str_to_date(#{query.collectTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
+            </if>
+            <if test="query.nextType!=null and query.nextType==1 and query.currentId!=null">
+                <![CDATA[ and collect_id<#{query.currentId} ]]> order by collect_id desc
+            </if>
+            <if test="query.nextType!=null and query.nextType==-1 and query.currentId!=null">
+                <![CDATA[ and collect_id>#{query.currentId} ]]> order by collect_id asc
+            </if>
+        </where>
+    </sql>
+
+    <!-- 查询集合-->
+    <select id="selectList" resultMap="base_result_map">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM app_user_collect
+        <include refid="query_condition"/>
+        <if test="query.orderBy!=null">
+            order by ${query.orderBy}
+        </if>
+        <if test="query.simplePage!=null">
+            limit #{query.simplePage.start},#{query.simplePage.end}
+        </if>
+    </select>
+
+    <!-- 查询数量-->
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT count(1) FROM app_user_collect
+        <include refid="query_condition"/>
+    </select>
+
+    <!-- 插入 （匹配有值的字段）-->
+    <insert id="insert" parameterType="com.jackdaw.jinjobbackendmodel.entity.po.AppUserCollect">
+        <selectKey keyProperty="bean.collectId" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO app_user_collect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bean.userId != null">
+                user_id,
+            </if>
+            <if test="bean.objectId != null">
+                object_id,
+            </if>
+            <if test="bean.collectType != null">
+                collect_type,
+            </if>
+            <if test="bean.collectTime != null">
+                collect_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bean.userId!=null">
+                #{bean.userId},
+            </if>
+            <if test="bean.objectId!=null">
+                #{bean.objectId},
+            </if>
+            <if test="bean.collectType!=null">
+                #{bean.collectType},
+            </if>
+            <if test="bean.collectTime!=null">
+                #{bean.collectTime},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 插入或者更新 （匹配有值的字段）-->
+    <insert id="insertOrUpdate" parameterType="com.jackdaw.jinjobbackendmodel.entity.po.AppUserCollect">
+        INSERT INTO app_user_collect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bean.collectId != null">
+                collect_id,
+            </if>
+            <if test="bean.userId != null">
+                user_id,
+            </if>
+            <if test="bean.objectId != null">
+                object_id,
+            </if>
+            <if test="bean.collectType != null">
+                collect_type,
+            </if>
+            <if test="bean.collectTime != null">
+                collect_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bean.collectId!=null">
+                #{bean.collectId},
+            </if>
+            <if test="bean.userId!=null">
+                #{bean.userId},
+            </if>
+            <if test="bean.objectId!=null">
+                #{bean.objectId},
+            </if>
+            <if test="bean.collectType!=null">
+                #{bean.collectType},
+            </if>
+            <if test="bean.collectTime!=null">
+                #{bean.collectTime},
+            </if>
+        </trim>
+        on DUPLICATE key update
+        <trim prefix="" suffix="" suffixOverrides=",">
+            <if test="bean.userId!=null">
+                user_id = VALUES(user_id),
+            </if>
+            <if test="bean.objectId!=null">
+                object_id = VALUES(object_id),
+            </if>
+            <if test="bean.collectType!=null">
+                collect_type = VALUES(collect_type),
+            </if>
+            <if test="bean.collectTime!=null">
+                collect_time = VALUES(collect_time),
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 添加 （批量插入）-->
+    <insert id="insertBatch" parameterType="com.jackdaw.jinjobbackendmodel.entity.po.AppUserCollect" useGeneratedKeys="true"
+            keyProperty="collectId">
+        INSERT INTO app_user_collect(
+        user_id,
+        object_id,
+        collect_type,
+        collect_time
+        )values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.userId},
+            #{item.objectId},
+            #{item.collectType},
+            #{item.collectTime}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 批量新增修改 （批量插入）-->
+    <insert id="insertOrUpdateBatch" parameterType="com.jackdaw.jinjobbackendmodel.entity.po.AppUserCollect">
+        INSERT INTO app_user_collect(
+        user_id,
+        object_id,
+        collect_type,
+        collect_time
+        )values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.userId},
+            #{item.objectId},
+            #{item.collectType},
+            #{item.collectTime}
+            )
+        </foreach>
+        on DUPLICATE key update
+        user_id = VALUES(user_id),
+        object_id = VALUES(object_id),
+        collect_type = VALUES(collect_type),
+        collect_time = VALUES(collect_time)
+    </insert>
+
+    <!--多条件修改-->
+    <update id="updateByParam" parameterType="com.jackdaw.jinjobbackendmodel.entity.query.AppUserCollectQuery">
+        UPDATE app_user_collect
+        <set>
+            <if test="bean.userId != null">
+                user_id = #{bean.userId},
+            </if>
+            <if test="bean.objectId != null">
+                object_id = #{bean.objectId},
+            </if>
+            <if test="bean.collectType != null">
+                collect_type = #{bean.collectType},
+            </if>
+            <if test="bean.collectTime != null">
+                collect_time = #{bean.collectTime},
+            </if>
+        </set>
+        <include refid="query_condition"/>
+    </update>
+
+    <!--多条件删除-->
+    <delete id="deleteByParam">
+        delete from app_user_collect
+        <include refid="query_condition"/>
+    </delete>
+
+    <!-- 根据CollectId修改-->
+    <update id="updateByCollectId" parameterType="com.jackdaw.jinjobbackendmodel.entity.po.AppUserCollect">
+        UPDATE app_user_collect
+        <set>
+            <if test="bean.userId != null">
+                user_id = #{bean.userId},
+            </if>
+            <if test="bean.objectId != null">
+                object_id = #{bean.objectId},
+            </if>
+            <if test="bean.collectType != null">
+                collect_type = #{bean.collectType},
+            </if>
+            <if test="bean.collectTime != null">
+                collect_time = #{bean.collectTime},
+            </if>
+        </set>
+        where collect_id=#{collectId}
+    </update>
+
+    <!-- 根据CollectId删除-->
+    <delete id="deleteByCollectId">
+        delete
+        from app_user_collect
+        where collect_id = #{collectId}
+    </delete>
+
+    <!-- 根据PrimaryKey获取对象-->
+    <select id="selectByCollectId" resultMap="base_result_map">
+        select
+        <include refid="base_column_list"/>
+        from app_user_collect where collect_id=#{collectId}
+    </select>
+
+    <!-- 根据UserIdAndObjectIdAndCollectType修改-->
+    <update id="updateByUserIdAndObjectIdAndCollectType" parameterType="com.jackdaw.jinjobbackendmodel.entity.po.AppUserCollect">
+        UPDATE app_user_collect
+        <set>
+            <if test="bean.collectTime != null">
+                collect_time = #{bean.collectTime},
+            </if>
+        </set>
+        where user_id=#{userId} and object_id=#{objectId} and collect_type=#{collectType}
+    </update>
+
+    <!-- 根据UserIdAndObjectIdAndCollectType删除-->
+    <delete id="deleteByUserIdAndObjectIdAndCollectType">
+        delete
+        from app_user_collect
+        where user_id = #{userId}
+          and object_id = #{objectId}
+          and collect_type = #{collectType}
+    </delete>
+
+    <!-- 根据PrimaryKey获取对象-->
+    <select id="selectByUserIdAndObjectIdAndCollectType" resultMap="base_result_map">
+        select
+        <include refid="base_column_list"/>
+        from app_user_collect where user_id=#{userId} and object_id=#{objectId} and collect_type=#{collectType}
+    </select>
+
+    <select id="showDetailNext" resultMap="base_result_map">
+        select * from app_user_collect
+        <include refid="query_condition"/>
+        limit 0,1
+    </select>
+</mapper>
