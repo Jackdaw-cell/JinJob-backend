@@ -79,7 +79,6 @@ public class AppUserInfoQuery extends BaseParam {
 	private String lastUseDeviceId;
 
 	private String lastUseDeviceIdFuzzy;
-
 	/**
 	 * 标签
 	 */
@@ -94,6 +93,22 @@ public class AppUserInfoQuery extends BaseParam {
 	 * 背景
 	 */
 	private String background;
+
+	/**
+	 * 标签
+	 */
+	private String examAcSum;
+
+	/**
+	 * 标签
+	 */
+	private String ojAcSum;
+
+
+	/**
+	 * 标签
+	 */
+	private String examAcScore;
 
 	/**
 	 * 手机品牌

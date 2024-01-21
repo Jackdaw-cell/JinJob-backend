@@ -282,7 +282,7 @@ public class QuestionController extends ABaseController {
                 scoreResult += appExamAnswerQuestion.getScore();
             }
             appExamAnswer.setAccuracy(Math.round((accuracyResult/list.size()) * 100F * 10.0) / 100.0);
-            appExamAnswer.setScore(scoreResult);
+            appExamAnswer.setScore(scoreResult/list.size());
             appExamAnswer.setStatus(1);
         }
         boolean result = appExamAnswerService.saveOrUpdate(appExamAnswer);

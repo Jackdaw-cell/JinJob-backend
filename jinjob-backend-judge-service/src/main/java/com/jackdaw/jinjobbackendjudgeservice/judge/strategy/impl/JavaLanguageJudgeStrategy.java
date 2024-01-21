@@ -50,7 +50,7 @@ public class JavaLanguageJudgeStrategy implements JudgeStrategy {
             }
             JudgeCase judgeCase = judgeCaseList.get(i);
             if (!judgeCase.getOutput().equals(outputList.get(i))) {
-                judgeInfoResponse.setMessage(StrUtil.format("回答错误,测试通过例{}/{}\n错误测试例输出：{}\n",i,judgeCaseList.size(),inputList.get(i),outputList.get(i)));
+                judgeInfoResponse.setMessage(StrUtil.format("回答错误,测试通过例：{}/{}\n错误测试例输出：{}\n",i,judgeCaseList.size(),inputList.get(i),outputList.get(i)));
                 judgeInfoResponse.setStatus(QuestionSubmitStatusEnum.FAILED.getValue());
                 return judgeInfoResponse;
             }
