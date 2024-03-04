@@ -49,8 +49,20 @@ public class ShareController extends ABaseController {
         return ResultUtils.success(shareInfoService.findListByPage(query));
     }
 
-    //TODO:新增接口 getShareDetail获取当前文章
-    //TODO:新增评论系统；评论表，文章评论接口
+    @GetMapping("/loadMyShareList")
+    public BaseResponse<PaginationResultVO<ShareInfo>> loadMyShareList(@RequestHeader(value = "Authorization", required = false) String token,
+                                                                       @RequestParam Integer pageNo,
+                                                                        @RequestParam Integer pageSize) {
+        ShareInfoQuery query = new ShareInfoQuery();
+        AppUserLoginDto userAppDto = getAppUserLoginInfoFromToken(token);
+        query.setPageNo(pageNo);
+        query.setPageSize(pageSize);
+        query.setCreateUserId(userAppDto.getUserId());
+        query.setOrderBy("share_id desc");
+        query.setStatus(PostStatusEnum.POST.getStatus());
+        query.setQueryTextContent(false);
+        return ResultUtils.success(shareInfoService.findListByPage(query));
+    }
 
     @GetMapping("/getShareDetailNext")
     @GlobalInterceptor
@@ -105,12 +117,12 @@ public class ShareController extends ABaseController {
         return getSuccessResponseVO(null);
     }
 
-    @PostMapping("/delShareBatch")
-    @GlobalInterceptor(permissionCode = PermissionCodeEnum.SHARE_DEL_BATCH)
-    public ResponseVO delShareBatch(@RequestHeader(value = "Authorization", required = false) String token,
-                                    @VerifyParam(required = true) String shareIds) {
-        AppUserLoginDto userAppDto = getAppUserLoginInfoFromToken(token);
-        shareInfoService.delShareBatch(shareIds,"");
-        return getSuccessResponseVO(null);
-    }
+//    @PostMapping("/delShareBatch")
+//    @GlobalInterceptor(permissionCode = PermissionCodeEnum.SHARE_DEL_BATCH)
+//    public ResponseVO delShareBatch(@RequestHeader(value = "Authorization", required = false) String token,
+//                                    @VerifyParam(required = true) String shareIds) {
+//        AppUserLoginDto userAppDto = getAppUserLoginInfoFromToken(token);
+//        shareInfoService.delShareBatch(shareIds,"");
+//        return getSuccessResponseVO(null);
+//    }
 }

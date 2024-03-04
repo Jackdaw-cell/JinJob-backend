@@ -1,8 +1,12 @@
 package com.jackdaw.jinjobbackendmodel.enums;
 
 public enum StatisticsDateTypeEnum {
-    APP_DOWNLOAD(0, "App下载"), REGISTER_USER(1, "注册用户"), QUESTION_INFO(3, "八股文"),
-    EXAM(4, "考题"), SHARE(5, "分享"), FEEDBACK(6, "反馈");
+//    APP_DOWNLOAD(0, "App下载"),
+    REGISTER_USER(1, "注册用户"),
+    QUESTION_INFO(3, "八股文"),
+    EXAM(4, "考题"),
+    SHARE(5, "分享");
+//    FEEDBACK(6, "反馈");
 
     private Integer type;
     private String description;

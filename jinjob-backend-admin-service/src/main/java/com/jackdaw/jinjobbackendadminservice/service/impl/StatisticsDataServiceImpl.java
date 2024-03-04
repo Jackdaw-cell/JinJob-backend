@@ -45,13 +45,13 @@ public class StatisticsDataServiceImpl implements StatisticsDataService {
             StatisticsDataDto dataDto = new StatisticsDataDto();
             dataDto.setStatisticsName(item.getDescription());
             switch (item) {
-                case APP_DOWNLOAD:
-                    AppDeviceQuery deviceQuery = new AppDeviceQuery();
-                    dataDto.setCount(appDeviceMapper.selectCount(deviceQuery));
-                    deviceQuery.setCreateTimeStart(preDate);
-                    deviceQuery.setCreateTimeEnd(preDate);
-                    dataDto.setPreCount(appDeviceMapper.selectCount(deviceQuery));
-                    break;
+//                case APP_DOWNLOAD:
+//                    AppDeviceQuery deviceQuery = new AppDeviceQuery();
+//                    dataDto.setCount(appDeviceMapper.selectCount(deviceQuery));
+//                    deviceQuery.setCreateTimeStart(preDate);
+//                    deviceQuery.setCreateTimeEnd(preDate);
+//                    dataDto.setPreCount(appDeviceMapper.selectCount(deviceQuery));
+//                    break;
                 case REGISTER_USER:
                     AppUserInfoQuery appUserInfoQuery = new AppUserInfoQuery();
                     dataDto.setCount(appUserInfoMapper.selectCount(appUserInfoQuery));
@@ -81,14 +81,14 @@ public class StatisticsDataServiceImpl implements StatisticsDataService {
                     shareInfoQuery.setCreateTimeEnd(preDate);
                     dataDto.setPreCount(shareInfoMapper.selectCount(shareInfoQuery));
                     break;
-                case FEEDBACK:
-                    AppFeedbackQuery feedbackQuery = new AppFeedbackQuery();
-                    feedbackQuery.setPFeedbackId(0);
-                    dataDto.setCount(appFeedbackMapper.selectCount(feedbackQuery));
-                    feedbackQuery.setCreateTimeStart(preDate);
-                    feedbackQuery.setCreateTimeEnd(preDate);
-                    dataDto.setPreCount(appFeedbackMapper.selectCount(feedbackQuery));
-                    break;
+//                case FEEDBACK:
+//                    AppFeedbackQuery feedbackQuery = new AppFeedbackQuery();
+//                    feedbackQuery.setPFeedbackId(0);
+//                    dataDto.setCount(appFeedbackMapper.selectCount(feedbackQuery));
+//                    feedbackQuery.setCreateTimeStart(preDate);
+//                    feedbackQuery.setCreateTimeEnd(preDate);
+//                    dataDto.setPreCount(appFeedbackMapper.selectCount(feedbackQuery));
+//                    break;
             }
             dataList.add(dataDto);
         }
@@ -111,10 +111,10 @@ public class StatisticsDataServiceImpl implements StatisticsDataService {
         weekDto.setDateList(days);
         weekDto.setItemDataList(new ArrayList<>());
 
-        StatisticsDataDto download = new StatisticsDataDto();
-        download.setListData(new ArrayList<>());
-        download.setStatisticsName(StatisticsDateTypeEnum.APP_DOWNLOAD.getDescription());
-        weekDto.getItemDataList().add(download);
+//        StatisticsDataDto download = new StatisticsDataDto();
+//        download.setListData(new ArrayList<>());
+//        download.setStatisticsName(StatisticsDateTypeEnum.APP_DOWNLOAD.getDescription());
+//        weekDto.getItemDataList().add(download);
 
         StatisticsDataDto register = new StatisticsDataDto();
         register.setStatisticsName(StatisticsDateTypeEnum.REGISTER_USER.getDescription());
@@ -122,11 +122,11 @@ public class StatisticsDataServiceImpl implements StatisticsDataService {
         weekDto.getItemDataList().add(register);
 
         for (String date : days) {
-            AppDeviceQuery deviceQuery = new AppDeviceQuery();
-            deviceQuery.setCreateTimeStart(date);
-            deviceQuery.setCreateTimeEnd(date);
-            Integer downloadCount = appDeviceMapper.selectCount(deviceQuery);
-            download.getListData().add(downloadCount);
+//            AppDeviceQuery deviceQuery = new AppDeviceQuery();
+//            deviceQuery.setCreateTimeStart(date);
+//            deviceQuery.setCreateTimeEnd(date);
+//            Integer downloadCount = appDeviceMapper.selectCount(deviceQuery);
+//            download.getListData().add(downloadCount);
 
             AppUserInfoQuery appUserInfoQuery = new AppUserInfoQuery();
             appUserInfoQuery.setJoinTimeStart(date);
@@ -161,7 +161,7 @@ public class StatisticsDataServiceImpl implements StatisticsDataService {
         weekDto.getItemDataList().add(share);
 
         StatisticsDataDto feedback = new StatisticsDataDto();
-        feedback.setStatisticsName(StatisticsDateTypeEnum.FEEDBACK.getDescription());
+//        feedback.setStatisticsName(StatisticsDateTypeEnum.FEEDBACK.getDescription());
         feedback.setListData(new ArrayList<>());
         weekDto.getItemDataList().add(feedback);
 
